@@ -1,0 +1,430 @@
+/* ==========================================================
+   BioTechXplore — Ultra-Advanced Neo-Glass Theme
+   Refined for high-end feel and performance.
+   ========================================================== */
+
+:root {
+  /* Core Palette - Deeper, more scientific tones */
+  --bg: #05070a;
+  --bg-subtle: #0a0e17;
+  --panel: rgba(13, 17, 28, 0.7);
+  
+  /* Glassmorphism & Borders */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-bright: rgba(255, 255, 255, 0.15);
+  
+  /* Typography */
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  
+  /* Brand Accents - High-contrast neon */
+  --accent: #8b5cf6;          /* Vivid Violet */
+  --accent-2: #06b6d4;        /* Electric Cyan */
+  --accent-glow: rgba(139, 92, 246, 0.4);
+  
+  /* Feedback */
+  --danger: #ef4444;
+  --success: #10b981;
+  --warning: #f59e0b;
+
+  /* Geometry */
+  --radius: 20px;
+  --radius-sm: 12px;
+  --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  
+  /* Transitions */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition: 0.3s var(--ease);
+}
+
+/* ---------- Base Reset & Typography ---------- */
+* { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+html, body { 
+  height: 100%; 
+  scroll-behavior: smooth; 
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg);
+  /* Advanced Mesh Gradient Background */
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.1) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(139, 92, 246, 0.05) 0px, transparent 50%);
+  background-attachment: fixed;
+  line-height: 1.6;
+}
+
+a { 
+  color: inherit; 
+  text-decoration: none; 
+  transition: var(--transition); 
+}
+
+/* ---------- Layout Containers ---------- */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+/* ---------- Advanced Topbar ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(5, 7, 10, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.topbar__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(to right, #fff, var(--muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand:before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 0 20px var(--accent-glow);
+  transform: rotate(45deg);
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 4px;
+  border-radius: 14px;
+  border: 1px solid var(--glass-border);
+}
+
+.nav a {
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.nav a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* ---------- Cards & Grid System ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-border-bright), transparent);
+}
+
+.card--link:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(139, 92, 246, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ---------- Advanced Inputs & Forms ---------- */
+.form {
+  background: var(--panel);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow-lg);
+}
+
+.field span {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  color: var(--accent-2);
+  font-weight: 700;
+}
+
+input[type="text"], input[type="email"], input[type="password"],
+input[type="number"], input[type="search"], input[type="url"],
+textarea, select {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-size: 15px;
+  transition: var(--transition);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(139, 92, 246, 0.05);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid var(--glass-border);
+  transition: all 0.2s var(--ease);
+  gap: 8px;
+}
+
+.btn--primary {
+  background: linear-gradient(135deg, var(--accent), #6d28d9);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5);
+  filter: brightness(1.1);
+}
+
+.btn--primary:active { transform: translateY(0); }
+
+/* ---------- Interactive Quiz System ---------- */
+.quiz-option {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.quiz-option:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--glass-border-bright);
+}
+
+.quiz-option:has(input:checked) {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+}
+
+.quiz-option input[type="radio"] {
+  accent-color: var(--accent);
+  width: 20px;
+  height: 20px;
+}
+
+/* ---------- Content Styling ---------- */
+.content {
+  background: rgba(13, 17, 28, 0.4);
+  border: 1px solid var(--glass-border);
+  padding: 40px;
+  border-radius: var(--radius);
+}
+
+.content h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(to bottom right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.badge {
+  background: rgba(139, 92, 246, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  padding: 4px 12px;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+/* ---------- Alerts ---------- */
+.alert {
+  border-left: 4px solid var(--accent);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+}
+
+.alert--success { border-color: var(--success); color: #a7f3d0; }
+.alert--error { border-color: var(--danger); color: #fecaca; }
+
+/* ---------- Footer ---------- */
+.footer {
+  margin-top: 80px;
+  padding: 40px 0;
+  border-top: 1px solid var(--glass-border);
+  font-size: 14px;
+}
+
+/* ---------- Responsive Optimization ---------- */
+@media (max-width: 768px) {
+  .topbar__inner { flex-direction: column; gap: 16px; }
+  .grid { grid-template-columns: 1fr; }
+  .content { padding: 24px; }
+  .brand { font-size: 1.1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  * { animation: none !important; transition: none !important; }
+}
+
+/* ==========================================================
+   BioTechXplore FIX: Link Stacking & Spacing
+   ========================================================== */
+
+/* 1. Ensure the stack container allows items to grow naturally */
+.stack {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important; /* Adds healthy space between lessons */
+  height: auto !important; 
+  min-height: min-content;
+  margin-top: 20px;
+}
+
+/* 2. Style the individual lesson links to be clear and clickable */
+.stack a {
+  display: block;
+  width: 100%;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: #eef2ff;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+/* 3. Hover effect to make it look "Advanced" */
+.stack a:hover {
+  background: rgba(124, 92, 255, 0.1);
+  border-color: rgba(124, 92, 255, 0.4);
+  transform: translateX(8px); /* Subtle slide to the right */
+}
+
+/* 4. Fix for the weird dark blob/background behind links */
+.content {
+  overflow: visible !important; /* Prevents clipping */
+  background: transparent !important; /* Removes the dark box if it's causing the blob */
+}
+
+/* 5. Improve the "Leçons" title spacing */
+h2 {
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+/* ==========================================================
+   FIX macOS scroll “ghosting / duplicated layers”
+   Keep neo-glass look but avoid GPU repaint bugs
+   ========================================================== */
+
+/* 1) background-attachment: fixed is a big trigger on macOS */
+body{
+  background-attachment: scroll !important;
+}
+
+/* 2) backdrop-filter on sticky headers triggers ghosting */
+.topbar{
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  /* keep the same look without blur */
+  background: rgba(5, 7, 10, 0.92) !important;
+}
+
+/* 3) also remove blur from alerts (less critical but helps) */
+.alert{
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* 4) reduce transform usage (creates extra compositing layers) */
+.card--link:hover,
+.btn--primary:hover{
+  transform: none !important;
+}
+
+/* 5) reduce heavy shadows (GPU pressure on long pages) */
+.card,
+.form{
+  box-shadow: 0 14px 28px rgba(0,0,0,0.45) !important;
+}
+
+/* 6) avoid “layer promotion” on large scrollers */
+.card, .topbar, .content, .quiz-option{
+  will-change: auto !important;
+}
+
+/* 7) Make radio + label layout stable (prevents weird spacing) */
+.quiz-option{
+  gap: 12px;
+}
+.quiz-option input[type="radio"]{
+  flex: 0 0 auto;
+  margin-right: 12px;
+}
+.quiz-option span{
+  flex: 1 1 auto;
+  text-align: left;
+}
+
+
