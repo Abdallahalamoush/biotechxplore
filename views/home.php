@@ -9,8 +9,8 @@
     </p>
 
     <div class="hero__actions">
-      <a class="btn btn--primary" href="/?r=/levels">Voir les niveaux</a>
-      <a class="btn btn--ghost" href="/?r=/login">Se connecter</a>
+      <a class="btn btn--primary" href="<?= url('/levels') ?>">Voir les niveaux</a>
+      <a class="btn btn--ghost" href="<?= url('/login') ?>">Se connecter</a>
     </div>
   </div>
 

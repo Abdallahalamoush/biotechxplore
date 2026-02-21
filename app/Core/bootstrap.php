@@ -20,30 +20,31 @@ if (!function_exists('env')) {
 }
 
 // =========================
-// 2) Helpers Request
+// 2) Helpers Request & Path Detection
 // =========================
-if (!function_exists('request_method')) {
-    function request_method(): string {
-        return strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
-    }
-}
-
-if (!function_exists('request_uri_path')) {
-    function request_uri_path(): string {
-        $uri = $_SERVER['REQUEST_URI'] ?? '/';
-        return parse_url($uri, PHP_URL_PATH) ?: '/';
+if (!function_exists('get_base_url')) {
+    function get_base_url(): string {
+        // Automatically detects your MAMP folder (e.g., /BioTechXplore/public)
+        $scriptDir = dirname($_SERVER['SCRIPT_NAME']);
+        return ($scriptDir === '/' || $scriptDir === '\\') ? '' : $scriptDir;
     }
 }
 
 if (!function_exists('request_path')) {
     function request_path(): string {
-        // Mode "sans rewrite": /?r=/login
+        // 100% Foolproof: reads the exact route from the ?r= parameter
         if (isset($_GET['r'])) {
             $p = trim((string)$_GET['r']);
             if ($p === '') return '/';
             return $p[0] === '/' ? $p : '/' . $p;
         }
-        return request_uri_path();
+        return '/';
+    }
+}
+
+if (!function_exists('request_method')) {
+    function request_method(): string {
+        return strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
     }
 }
 
@@ -52,7 +53,6 @@ if (!function_exists('is_post')) {
         return request_method() === 'POST';
     }
 }
-
 // =========================
 // 3) Debug (optionnel)
 // =========================
@@ -90,15 +90,16 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // =========================
-// 6) URL helper (no-rewrite)
+// 6) Dynamic URL helper (Foolproof URLs)
 // =========================
 if (!function_exists('url')) {
     function url(string $path): string {
-        // Force no-rewrite everywhere: /?r=/something
         $p = trim($path);
         if ($p === '') $p = '/';
         if ($p[0] !== '/') $p = '/' . $p;
-        return '/?r=' . $p;
+        
+        // Builds a guaranteed working URL: /your_folder/public/?r=/path
+        return get_base_url() . '/?r=' . $p;
     }
 }
 
@@ -191,13 +192,6 @@ if (!function_exists('csrf_verify')) {
         }
     }
 }
-
-function csrf_field(): string
-{
-    $t = htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8');
-    return '<input type="hidden" name="_csrf" value="' . $t . '">';
-}
-
 
 // =========================
 // 10) Connexion DB (PDO)

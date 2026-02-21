@@ -20,17 +20,18 @@ $error = flash('error');
       <a class="brand" href="/">BioTechXplore</a>
 
       <nav class="nav">
-        <a href="/" class="nav__link">Accueil</a>
-        <a href="/levels" class="nav__link">Niveaux</a>
+        <a href="<?= url('/') ?>" class="nav__link">Accueil</a>
+        <a href="<?= url('/levels') ?>" class="nav__link">Niveaux</a>
 
         <?php if (Auth::check()): ?>
-          <form class="nav__form" method="POST" action="/logout">
+          <form class="nav__form" method="POST" action="<?= url('/logout') ?>">
             <input type="hidden" name="_csrf" value="<?= htmlspecialchars(csrf_token()) ?>" />
             <button class="btn btn--ghost" type="submit">Déconnexion</button>
           </form>
         <?php else: ?>
-          <a href="/login" class="btn btn--primary">Connexion</a>
+          <a href="<?= url('/login') ?>" class="btn btn--primary">Connexion</a>
         <?php endif; ?>
+      </nav>
       </nav>
     </div>
   </header>

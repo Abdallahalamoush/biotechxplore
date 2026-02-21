@@ -16,4 +16,9 @@ return [
     // Optionnel (si tu veux)
     'APP_ENV' => 'dev',
     'APP_DEBUG' => true,
+    // Example: If your app is in a subfolder
+    'APP_URL' => 'http://localhost:8889/BioTechXplore_V2/public',
+    
+    // OR Example: If MAMP is pointed directly at the public folder
+    // 'APP_URL' => 'http://localhost:8889',
 ];

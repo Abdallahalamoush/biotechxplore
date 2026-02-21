@@ -1,45 +1,54 @@
 /* ==========================================================
    BioTechXplore — Ultra-Advanced Neo-Glass Theme
-   Refined for high-end feel and performance.
+   (Performance & GPU Optimized Version)
    ========================================================== */
 
 :root {
-  /* Core Palette - Deeper, more scientific tones */
   --bg: #05070a;
   --bg-subtle: #0a0e17;
   --panel: rgba(13, 17, 28, 0.7);
   
-  /* Glassmorphism & Borders */
   --glass-bg: rgba(255, 255, 255, 0.03);
   --glass-border: rgba(255, 255, 255, 0.08);
   --glass-border-bright: rgba(255, 255, 255, 0.15);
   
-  /* Typography */
   --text: #f8fafc;
   --muted: #94a3b8;
   
-  /* Brand Accents - High-contrast neon */
-  --accent: #8b5cf6;          /* Vivid Violet */
-  --accent-2: #06b6d4;        /* Electric Cyan */
+  --accent: #8b5cf6;
+  --accent-2: #06b6d4;
   --accent-glow: rgba(139, 92, 246, 0.4);
   
-  /* Feedback */
   --danger: #ef4444;
   --success: #10b981;
-  --warning: #f59e0b;
-
-  /* Geometry */
+  
   --radius: 20px;
   --radius-sm: 12px;
-  --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.5); /* Reduced shadow cost */
   
-  /* Transitions */
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --transition: 0.3s var(--ease);
 }
 
-/* ---------- Base Reset & Typography ---------- */
-* { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f8fafc;
+    --bg-subtle: #f1f5f9;
+    --panel: rgba(255, 255, 255, 0.8);
+    --glass-bg: rgba(0, 0, 0, 0.03);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --glass-border-bright: rgba(0, 0, 0, 0.15);
+    --text: #0f172a;
+    --muted: #64748b;
+    --accent: #7c3aed;
+    --accent-2: #0891b2;
+    --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+  }
+}
+
+* { 
+  box-sizing: border-box; 
+  -webkit-font-smoothing: antialiased; 
+}
 
 html, body { 
   height: 100%; 
@@ -51,37 +60,60 @@ body {
   color: var(--text);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg);
-  /* Advanced Mesh Gradient Background */
+  line-height: 1.6;
+  position: relative;
+}
+
+/* 🚀 PERFORMANCE FIX 1: Fixed Background Layer
+   Instead of repainting the gradient on every scroll tick, we put it 
+   on a fixed layer. The browser paints it once and forgets it. */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  pointer-events: none;
   background-image: 
     radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
     radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.1) 0px, transparent 50%),
     radial-gradient(at 50% 100%, rgba(139, 92, 246, 0.05) 0px, transparent 50%);
-  background-attachment: fixed;
-  line-height: 1.6;
+}
+
+@media (prefers-color-scheme: light) {
+  body::before {
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(8, 145, 178, 0.08) 0px, transparent 50%);
+  }
 }
 
 a { 
   color: inherit; 
   text-decoration: none; 
-  transition: var(--transition); 
 }
 
-/* ---------- Layout Containers ---------- */
 .container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 40px 24px;
 }
 
-/* ---------- Advanced Topbar ---------- */
+/* 🚀 PERFORMANCE FIX 2: Optimized Sticky Header 
+   Removed "saturate()" and reduced blur radius to ease GPU load. Added will-change. */
 .topbar {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(5, 7, 10, 0.75);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(5, 7, 10, 0.85); 
+  backdrop-filter: blur(12px); 
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--glass-border);
+  transform: translateZ(0);
+  will-change: transform, backdrop-filter;
+}
+
+@media (prefers-color-scheme: light) {
+  .topbar { background: rgba(255, 255, 255, 0.85); }
 }
 
 .topbar__inner {
@@ -97,7 +129,7 @@ a {
   font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  background: linear-gradient(to right, #fff, var(--muted));
+  background: linear-gradient(to right, var(--text), var(--muted));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: flex;
@@ -118,26 +150,26 @@ a {
 .nav {
   display: flex;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--glass-bg);
   padding: 4px;
   border-radius: 14px;
   border: 1px solid var(--glass-border);
 }
 
-.nav a {
+.nav a, .nav button {
   padding: 8px 16px;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 600;
   color: var(--muted);
+  transition: background 0.2s, color 0.2s; /* 🚀 Removed transition: all */
 }
 
-.nav a:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.07);
+.nav a:hover, .nav button:hover {
+  color: var(--text);
+  background: var(--glass-border);
 }
 
-/* ---------- Cards & Grid System ---------- */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -152,7 +184,9 @@ a {
   padding: 24px;
   position: relative;
   overflow: hidden;
-  transition: var(--transition);
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s, background 0.3s;
+  will-change: transform; /* 🚀 Warns the GPU that this might move */
 }
 
 .card::before {
@@ -165,11 +199,36 @@ a {
 .card--link:hover {
   transform: translateY(-5px);
   border-color: var(--accent);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(139, 92, 246, 0.2);
-  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(139, 92, 246, 0.2);
+  background: var(--glass-bg);
 }
 
-/* ---------- Advanced Inputs & Forms ---------- */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.stack > a {
+  display: block;
+  width: 100%;
+  padding: 16px 20px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  position: relative;
+  transition: transform 0.2s var(--ease), background 0.2s, border-color 0.2s; /* 🚀 Specific transitions */
+  will-change: transform;
+}
+
+.stack > a:hover {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.4);
+  transform: translateX(8px);
+}
+
 .form {
   background: var(--panel);
   border: 1px solid var(--glass-border);
@@ -192,13 +251,13 @@ input[type="text"], input[type="email"], input[type="password"],
 input[type="number"], input[type="search"], input[type="url"],
 textarea, select {
   width: 100%;
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   padding: 14px 16px;
   border-radius: var(--radius-sm);
-  color: #fff;
+  color: var(--text);
   font-size: 15px;
-  transition: var(--transition);
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
 
 input:focus, textarea:focus, select:focus {
@@ -208,7 +267,6 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
 }
 
-/* ---------- Buttons ---------- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -218,9 +276,20 @@ input:focus, textarea:focus, select:focus {
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
-  border: 1px solid var(--glass-border);
-  transition: all 0.2s var(--ease);
+  border: 1px solid transparent;
   gap: 8px;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s, filter 0.2s, background 0.2s;
+  will-change: transform;
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--glass-border);
+  color: var(--text);
+}
+
+.btn--ghost:hover {
+  background: var(--glass-border);
 }
 
 .btn--primary {
@@ -238,20 +307,20 @@ input:focus, textarea:focus, select:focus {
 
 .btn--primary:active { transform: translateY(0); }
 
-/* ---------- Interactive Quiz System ---------- */
 .quiz-option {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  gap: 12px;
   padding: 16px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
   cursor: pointer;
-  transition: var(--transition);
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 .quiz-option:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--glass-border);
   border-color: var(--glass-border-bright);
 }
 
@@ -265,11 +334,17 @@ input:focus, textarea:focus, select:focus {
   accent-color: var(--accent);
   width: 20px;
   height: 20px;
+  flex: 0 0 auto;
+  margin-top: 3px;
 }
 
-/* ---------- Content Styling ---------- */
+.quiz-option span {
+  flex: 1 1 auto;
+  text-align: left;
+}
+
 .content {
-  background: rgba(13, 17, 28, 0.4);
+  background: var(--panel);
   border: 1px solid var(--glass-border);
   padding: 40px;
   border-radius: var(--radius);
@@ -279,9 +354,16 @@ input:focus, textarea:focus, select:focus {
   font-size: 2rem;
   font-weight: 800;
   margin-bottom: 1.5rem;
-  background: linear-gradient(to bottom right, #fff, #94a3b8);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--glass-border);
+  background: linear-gradient(to bottom right, var(--text), var(--muted));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.content h3 {
+  margin-top: 2rem;
+  color: var(--accent-2);
 }
 
 .badge {
@@ -292,19 +374,19 @@ input:focus, textarea:focus, select:focus {
   font-weight: 700;
   font-size: 11px;
   text-transform: uppercase;
+  border-radius: 4px;
 }
 
-/* ---------- Alerts ---------- */
 .alert {
+  padding: 16px;
+  border-radius: var(--radius-sm);
   border-left: 4px solid var(--accent);
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
+  background: var(--glass-bg);
 }
 
-.alert--success { border-color: var(--success); color: #a7f3d0; }
-.alert--error { border-color: var(--danger); color: #fecaca; }
+.alert--success { border-color: var(--success); color: #10b981; }
+.alert--error { border-color: var(--danger); color: #ef4444; }
 
-/* ---------- Footer ---------- */
 .footer {
   margin-top: 80px;
   padding: 40px 0;
@@ -312,7 +394,11 @@ input:focus, textarea:focus, select:focus {
   font-size: 14px;
 }
 
-/* ---------- Responsive Optimization ---------- */
+.footer__inner {
+  display: flex;
+  justify-content: space-between;
+}
+
 @media (max-width: 768px) {
   .topbar__inner { flex-direction: column; gap: 16px; }
   .grid { grid-template-columns: 1fr; }
@@ -321,110 +407,27 @@ input:focus, textarea:focus, select:focus {
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   * { animation: none !important; transition: none !important; }
 }
 
-/* ==========================================================
-   BioTechXplore FIX: Link Stacking & Spacing
-   ========================================================== */
-
-/* 1. Ensure the stack container allows items to grow naturally */
-.stack {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 16px !important; /* Adds healthy space between lessons */
-  height: auto !important; 
-  min-height: min-content;
-  margin-top: 20px;
-}
-
-/* 2. Style the individual lesson links to be clear and clickable */
-.stack a {
-  display: block;
-  width: 100%;
-  padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  color: #eef2ff;
-  transition: all 0.2s ease;
+/* ---------- Responsive YouTube Videos ---------- */
+.video-container {
   position: relative;
-  z-index: 1;
+  padding-bottom: 56.25%; /* Perfect 16:9 Aspect Ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  margin: 32px 0;
+  border: 1px solid var(--glass-border-bright);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  background: var(--bg); /* placeholder before load */
 }
 
-/* 3. Hover effect to make it look "Advanced" */
-.stack a:hover {
-  background: rgba(124, 92, 255, 0.1);
-  border-color: rgba(124, 92, 255, 0.4);
-  transform: translateX(8px); /* Subtle slide to the right */
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
-
-/* 4. Fix for the weird dark blob/background behind links */
-.content {
-  overflow: visible !important; /* Prevents clipping */
-  background: transparent !important; /* Removes the dark box if it's causing the blob */
-}
-
-/* 5. Improve the "Leçons" title spacing */
-h2 {
-  margin-bottom: 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 10px;
-}
-
-/* ==========================================================
-   FIX macOS scroll “ghosting / duplicated layers”
-   Keep neo-glass look but avoid GPU repaint bugs
-   ========================================================== */
-
-/* 1) background-attachment: fixed is a big trigger on macOS */
-body{
-  background-attachment: scroll !important;
-}
-
-/* 2) backdrop-filter on sticky headers triggers ghosting */
-.topbar{
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  /* keep the same look without blur */
-  background: rgba(5, 7, 10, 0.92) !important;
-}
-
-/* 3) also remove blur from alerts (less critical but helps) */
-.alert{
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* 4) reduce transform usage (creates extra compositing layers) */
-.card--link:hover,
-.btn--primary:hover{
-  transform: none !important;
-}
-
-/* 5) reduce heavy shadows (GPU pressure on long pages) */
-.card,
-.form{
-  box-shadow: 0 14px 28px rgba(0,0,0,0.45) !important;
-}
-
-/* 6) avoid “layer promotion” on large scrollers */
-.card, .topbar, .content, .quiz-option{
-  will-change: auto !important;
-}
-
-/* 7) Make radio + label layout stable (prevents weird spacing) */
-.quiz-option{
-  gap: 12px;
-}
-.quiz-option input[type="radio"]{
-  flex: 0 0 auto;
-  margin-right: 12px;
-}
-.quiz-option span{
-  flex: 1 1 auto;
-  text-align: left;
-}
-
-

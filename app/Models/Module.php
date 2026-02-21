@@ -20,4 +20,30 @@ class Module
         $stmt->execute(['id' => $moduleId]);
         return $stmt->fetchAll();
     }
+
+    /**
+     * Calculates the completion percentage of a module for a specific user.
+     */
+    public static function getProgress(int $userId, int $moduleId): int 
+    {
+        $pdo = DB::pdo();
+        
+        // Count total lessons in module
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM lessons WHERE module_id = ?");
+        $stmt->execute([$moduleId]);
+        $total = (int)$stmt->fetchColumn();
+
+        if ($total === 0) return 0;
+
+        // Count completed lessons by this user in this module
+        $stmt = $pdo->prepare("
+            SELECT COUNT(*) FROM progress p 
+            JOIN lessons l ON p.lesson_id = l.id 
+            WHERE p.user_id = ? AND l.module_id = ?
+        ");
+        $stmt->execute([$userId, $moduleId]);
+        $completed = (int)$stmt->fetchColumn();
+
+        return (int)round(($completed / $total) * 100);
+    }
 }

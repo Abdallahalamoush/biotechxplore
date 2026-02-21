@@ -7,8 +7,9 @@
   <div class="alert alert--error"><?= htmlspecialchars($msg) ?></div>
 <?php endif; ?>
 
-<form class="form" method="post" action="/?r=/login">
+<form class="form" method="post" action="<?= url('/login') ?>">
   <?= csrf_field(); ?>
+  
   <label class="field">
     <span>Email</span>
     <input type="email" name="email" required>
@@ -21,7 +22,7 @@
 
   <div class="hero__actions" style="margin-top: 12px;">
     <button class="btn btn--primary" type="submit">Se connecter</button>
-    <a class="btn btn--ghost" href="/?r=/">Retour</a>
+    <a class="btn btn--ghost" href="<?= url('/') ?>">Retour</a>
   </div>
 </form>
 

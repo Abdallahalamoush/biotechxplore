@@ -10,7 +10,7 @@ class LessonController
 {
     public function show(string $slug): void
     {
-        $userId = (int)($_SESSION['user']['id'] ?? 0);
+        $userId = (int)($_SESSION['user_id'] ?? 0); // Fixed from $_SESSION['user']['id'] to match your Auth.php
 
         $lesson = Lesson::findBySlug($slug);
         if (!$lesson) {
@@ -22,7 +22,7 @@ class LessonController
         $lessonId = (int)$lesson['id'];
         $isCompleted = ($userId > 0) ? Progress::isCompleted($userId, $lessonId) : false;
 
-        // ✅ Option B detection: if there are quiz questions for this lesson => treat as quiz
+        // Detection: if there are quiz questions for this lesson => treat as quiz
         $questions = Quiz::questionsForLesson($lessonId);
         $isQuiz = !empty($questions);
 
@@ -51,55 +51,11 @@ class LessonController
         ]);
     }
 
-    public function submitQuiz(): void
-    {
-        csrf_verify();
-
-        $userId = (int)($_SESSION['user']['id'] ?? 0);
-        if ($userId <= 0) {
-            redirect('/login');
-        }
-
-        $lessonSlug = (string)($_POST['lesson_slug'] ?? '');
-        if ($lessonSlug === '') {
-            http_response_code(400);
-            echo "Missing lesson_slug";
-            return;
-        }
-
-        $lesson = Lesson::findBySlug($lessonSlug);
-        if (!$lesson) {
-            http_response_code(404);
-            echo "Lesson not found";
-            return;
-        }
-
-        $lessonId = (int)$lesson['id'];
-
-        // Answers format: answers[question_id] = option_id
-        $answers = $_POST['answers'] ?? [];
-        if (!is_array($answers)) $answers = [];
-
-        $graded = Quiz::grade($lessonId, $answers);
-
-        Quiz::saveAttempt($userId, $lessonId, (int)$graded['score'], (int)$graded['total']);
-
-        // Store correction feedback to show on the quiz page
-        flash('quiz_feedback', json_encode([
-            'score' => $graded['score'],
-            'total' => $graded['total'],
-            'answers' => $answers,
-            'correct_map' => $graded['correct_map'],
-        ]));
-
-        redirect('/lessons/' . $lessonSlug);
-    }
-
     public function toggleProgress(): void
     {
         csrf_verify();
 
-        $userId = (int)($_SESSION['user']['id'] ?? 0);
+        $userId = (int)($_SESSION['user_id'] ?? 0); // Fixed to match your Auth.php
         $lessonSlug = (string)($_POST['lesson_slug'] ?? '');
         $action = (string)($_POST['action'] ?? '');
 
