@@ -12,6 +12,8 @@
       <a class="brand" href="<?= url('/') ?>">BioTechXplore</a>
       <nav class="nav">
         <a href="<?= url('/levels') ?>">Niveaux</a>
+        <a href="<?= url('/about') ?>">About Us</a>
+        <a href="<?= url('/contact') ?>">Contact</a>
         <a href="<?= url('/login') ?>">Login</a>
       </nav>
     </div>

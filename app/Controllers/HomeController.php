@@ -15,4 +15,14 @@ class HomeController
     {
         echo "OK";
     }
+
+    public function about(): void
+    {
+        view('about', ['title' => 'About Us - BioTechXplore']);
+    }
+
+    public function contact(): void
+    {
+        view('contact', ['title' => 'Contact Us']);
+    }
 }

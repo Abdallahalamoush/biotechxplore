@@ -24,9 +24,13 @@ $router = new Router();
 $router->get('/', [HomeController::class, 'index']);
 $router->get('/ping', [HomeController::class, 'ping']);
 
+$router->get('/about', [HomeController::class, 'about']);
+$router->get('/contact', [HomeController::class, 'contact']);
+
 $router->get('/login', [AuthController::class, 'showLogin']);
 $router->post('/login', [AuthController::class, 'login']);
 $router->post('/logout', [AuthController::class, 'logout']);
+
 
 // =========================
 // Protected routes (auth required)
